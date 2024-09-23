@@ -1,0 +1,53 @@
+
+public class Main {
+    public static void main(String[] args)
+    {
+        Smartphone smartphone1 = new Smartphone("apple", "Iphone 11", 2019,"Black",512, 5100, 108, "IOS", 3600);
+        smartphone1.display();
+
+        Smartphone smartphone2 = new Smartphone("xiomi", "redmi 13", 2023,"Black",128, 23000, 68, "ANDROID", 5200 );
+        smartphone2.display();
+
+        Smartphone smartphone3 = new Smartphone("samsung", "A 34", 2024,"white",1024, 33000, 128, "ANDROID", 4200  );
+        smartphone3.display();
+    }
+}
+
+public class Smartphone {
+    public String brand;
+    public String model;
+    public int year;
+    public String color;
+    public int storage;
+    public int price;
+    public int camera;
+    public String system;
+    public int battery;
+
+    public Smartphone(String brand, String model, int year, String color, int storage, int price, int camera, String system, int battery) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.color = color;
+        this.storage = storage;
+        this.price = price;
+        this.camera = camera;
+        this.system = system;
+        this.battery = battery;
+
+    }
+
+    public void display() {
+        System.out.println("Brand: " + brand);
+        System.out.println("Model: " + model);
+        System.out.println("Year: " + year);
+        System.out.println("Color: " + color);
+        System.out.println("Storage: " + storage);
+        System.out.println("Price: " + price);
+        System.out.println("Camera: " + camera);
+        System.out.println("System: " + system);
+        System.out.println("Battery: " + battery);
+        System.out.println("\n");
+    }
+
+}

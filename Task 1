@@ -1,0 +1,157 @@
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Welcome to the personal account manager");
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter your full name: ");
+        String accountHolderName = scanner.nextLine();
+
+        int accountNumber = 0;
+        boolean validInput = false;
+
+        while (!validInput) {
+            System.out.println("Enter your account number: ");
+            try {
+                accountNumber = scanner.nextInt();
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer for the account number.");
+                scanner.nextLine();
+            }
+        }
+
+        PersonalAccount holderAccount = new PersonalAccount(accountNumber, accountHolderName);
+
+        while (true) {
+            System.out.println(" ");
+            System.out.println("Options");
+            System.out.println("1. Account Number");
+            System.out.println("2. Account Holder Name");
+            System.out.println("3. Balance");
+            System.out.println("4. Deposit");
+            System.out.println("5. Withdraw");
+            System.out.println("6. Transaction histories:");
+            System.out.println("7. Exit");
+
+            // Get user choice
+            int holderInput = scanner.nextInt();
+            switch (holderInput) {
+                case 1:
+                    System.out.println("Account holder number: " + holderAccount.getAccountNumber());
+                    break;
+                case 2:
+                    System.out.println("Account holder name: " + holderAccount.getAccountHolderName());
+                    break;
+                case 3:
+                    System.out.println("Account holder balance: " + holderAccount.getBalance());
+                    break;
+                case 4:
+                    System.out.println("Enter amount to deposit: ");
+                    double depositMoney = scanner.nextDouble();
+                    holderAccount.deposit(depositMoney);
+                    break;
+                case 5:
+                    System.out.println("Enter amount to withdraw: ");
+                    double withdrawMoney = scanner.nextDouble();
+                    holderAccount.withdraw(withdrawMoney);
+                    break;
+                case 6:
+                    holderAccount.wholeTranactionHistories();
+                    break;
+                case 7:
+                    System.out.println("Exiting..."); 
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+}
+
+
+
+import java.util.ArrayList;
+
+public class PersonalAccount {
+    private int accountNumber;
+    private String accountHolderName;
+    private double balance;
+    private ArrayList<Amount> transactions;
+
+    public PersonalAccount(int accountNumber, String accountHolderName) {
+        this.accountNumber = accountNumber;
+        this.accountHolderName = accountHolderName;
+        this.balance = 0.0;
+        this.transactions = new ArrayList<>(); // Initialize transactions here
+    }
+
+    public void deposit(double moneyBalance) {
+        if (moneyBalance > 0) {
+            Amount newAmount = new Amount(moneyBalance, Amount.TransactionType.DEPOSIT);
+            transactions.add(newAmount);
+            this.balance += moneyBalance;
+            System.out.println("Balance: " + balance);
+        } else {
+            System.out.println("Invalid amount");
+        }
+    }
+
+    public void withdraw(double moneyBalance) {
+        if (moneyBalance <= balance && moneyBalance > 0) {
+            Amount newAmount = new Amount(moneyBalance, Amount.TransactionType.WITHDRAWAL);
+            transactions.add(newAmount);
+            this.balance -= moneyBalance;
+            System.out.println("Balance: " + balance);
+        } else {
+            System.out.println("Invalid withdrawal amount");
+        }
+    }
+
+    public void wholeTranactionHistories() {
+        System.out.println("Account " + accountNumber + " Transactions:");
+        for (Amount transfers : transactions) {
+            System.out.println(transfers.getTransactionType() + ": " + transfers.getBalance());
+        }
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getAccountHolderName() {
+        return accountHolderName;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+
+public class Amount {
+    private double moneyBalance; // Consider changing this to private
+    private TransactionType transactionType;
+
+    public enum TransactionType {
+        DEPOSIT,
+        WITHDRAWAL
+    }
+
+    public Amount(double balance, TransactionType transactionType) {
+        this.moneyBalance = balance; // This refers to the amount being deposited or withdrawn
+        this.transactionType = transactionType;
+    }
+
+    public double getBalance() {
+        return moneyBalance;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+}
